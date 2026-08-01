@@ -35,7 +35,7 @@
 - [x] **Task 6: Verification Engine & Anti-Hallucination Guard (`lib/verification/verifyEvidence.ts`)**
   - Implement Stage 4 verification engine to validate claims against underlying evidence. Enforce hard check for Path B: ensure message does NOT claim any specific unconfirmed incident occurred. Fail closed if verification fails.
 
-- [ ] **Task 7: Native "Order Again" Tab Integration**
+- [x] **Task 7: Native "Order Again" Tab Integration**
   - Implement primary customer surface on the "Order Again" tab using native Blinkit UI row styling to present contextually grounded re-engagement interventions.
 
 - [ ] **Task 8: Category / PDP Re-Entry Row Integration**
