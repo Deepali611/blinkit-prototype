@@ -38,7 +38,7 @@
 - [x] **Task 7: Native "Order Again" Tab Integration**
   - Implement primary customer surface on the "Order Again" tab using native Blinkit UI row styling to present contextually grounded re-engagement interventions.
 
-- [ ] **Task 8: Category / PDP Re-Entry Row Integration**
+- [x] **Task 8: Category / PDP Re-Entry Row Integration**
   - Implement secondary customer surface inline on product/category re-entry, styling the Mission Recovery module to match the real Blinkit "72 hours only replacement" row pattern.
 
 - [ ] **Task 9: Outcome Logging & RCCR Metric Pipeline**

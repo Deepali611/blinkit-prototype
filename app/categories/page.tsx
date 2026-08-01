@@ -1,21 +1,25 @@
+import CategoryReEntryRow from "@/components/CategoryReEntryRow";
+
 export default function CategoriesPage() {
   return (
     <div className="space-y-4">
-      <div className="bg-white p-6 rounded-2xl border border-blinkit-border shadow-sm">
-        <span className="inline-block px-2.5 py-1 text-xs font-semibold bg-blinkit-yellow/30 text-blinkit-black rounded-full mb-2">
-          Product Categories
-        </span>
-        <h1 className="text-xl font-bold text-blinkit-black mb-1">
-          Categories
-        </h1>
-        <p className="text-xs text-blinkit-muted">
-          Browse all grocery, gourmet, electronics, and household categories.
-        </p>
+      {/* Header Banner */}
+      <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-bold text-blinkit-black uppercase tracking-wider bg-blinkit-yellow/30 px-2 py-0.5 rounded-full">
+            Secondary Surface
+          </span>
+          <h1 className="text-lg font-extrabold text-blinkit-black mt-1">
+            Category & PDP Re-Entry
+          </h1>
+          <p className="text-xs text-blinkit-muted">
+            Inline trust row matching native Blinkit &quot;72 hours only replacement&quot; pattern.
+          </p>
+        </div>
       </div>
 
-      <div className="border border-dashed border-blinkit-border p-8 rounded-2xl text-center text-blinkit-muted bg-white/50">
-        <p className="text-xs">Empty Categories tab shell ready for category layout.</p>
-      </div>
+      {/* Main Secondary Surface Component */}
+      <CategoryReEntryRow />
     </div>
   );
 }
