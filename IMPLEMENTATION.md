@@ -23,7 +23,7 @@
 - [x] **Task 2: Seed Data Infrastructure**
   - Create mock datasets for customers, order histories (with lapsed category orders), negative signal flags, and rich category/product evidence fields (reorder rate, return rate, seller consistency score, expiry verification data, aggregate review themes).
 
-- [ ] **Task 3: Deterministic Lapse Detection Module (`lib/detection/detectLapse.ts`)**
+- [x] **Task 3: Deterministic Lapse Detection Module (`lib/detection/detectLapse.ts`)**
   - Implement Stage 1 deterministic rule engine to flag eligible Lapsed Category Expanders based on single category order, age threshold (N days), lack of repeat purchase, and presence/absence of negative signals.
 
 - [ ] **Task 4: AI Reasoning Route (`app/api/reason/route.ts`)**
