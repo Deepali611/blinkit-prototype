@@ -29,7 +29,7 @@
 - [x] **Task 4: AI Reasoning Route (`app/api/reason/route.ts`)**
   - Build server-side Groq integration to perform Stage 2 reasoning for Path A (confirmed signal) and Path B (inferred probable failure type), selecting evidence, generating grounded reassurance text, and recommending an allowed action (`highlight_seller`, `show_expiry_verification`, `show_replacement_guarantee`, `jump_to_reviews`, `focus_cta`, `no_action`).
 
-- [ ] **Task 5: Deterministic Confidence Gate (`lib/decision/confidenceGate.ts` & `app/api/gate/route.ts`)**
+- [x] **Task 5: Deterministic Confidence Gate (`lib/decision/confidenceGate.ts` & `app/api/gate/route.ts`)**
   - Implement Stage 3 confidence calculation using numeric thresholds over raw evidence (never LLM self-assessment) to gate interventions.
 
 - [ ] **Task 6: Verification Engine & Anti-Hallucination Guard (`lib/verification/verifyEvidence.ts`)**
