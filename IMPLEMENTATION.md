@@ -41,7 +41,7 @@
 - [x] **Task 8: Category / PDP Re-Entry Row Integration**
   - Implement secondary customer surface inline on product/category re-entry, styling the Mission Recovery module to match the real Blinkit "72 hours only replacement" row pattern.
 
-- [ ] **Task 9: Outcome Logging & RCCR Metric Pipeline**
+- [x] **Task 9: Outcome Logging & RCCR Metric Pipeline**
   - Implement Stage 6 logging for interventions, confidence scores, verification outcomes, and holdout groups, and compute the Repeat-Category Conversion Rate (RCCR) metric.
 
 - [ ] **Task 10: Internal Evaluator Mode UI**
