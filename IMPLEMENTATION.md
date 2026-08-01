@@ -20,7 +20,7 @@
 - [x] **Task 1: Scaffold Next.js App & Styling System**
   - Scaffold Next.js app with TypeScript and Vanilla CSS / Tailwind visual tokens matching Blinkit design conventions (colors, fonts, PDP/nav components).
 
-- [ ] **Task 2: Seed Data Infrastructure**
+- [x] **Task 2: Seed Data Infrastructure**
   - Create mock datasets for customers, order histories (with lapsed category orders), negative signal flags, and rich category/product evidence fields (reorder rate, return rate, seller consistency score, expiry verification data, aggregate review themes).
 
 - [ ] **Task 3: Deterministic Lapse Detection Module (`lib/detection/detectLapse.ts`)**
