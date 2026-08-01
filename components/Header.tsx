@@ -1,9 +1,10 @@
-import { MapPin, Search, User } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Search, Cpu } from "lucide-react";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-blinkit-yellow border-b border-blinkit-yellow-dark/20 px-4 pt-3 pb-3 max-w-md mx-auto shadow-sm">
-      {/* Top Location Bar */}
+      {/* Top Location & Evaluator Bar */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 overflow-hidden">
           <div className="bg-blinkit-black text-white p-1.5 rounded-full shrink-0">
@@ -20,9 +21,14 @@ export default function Header() {
             </p>
           </div>
         </div>
-        <div className="w-8 h-8 rounded-full bg-blinkit-black/10 flex items-center justify-center shrink-0">
-          <User className="w-4 h-4 text-blinkit-black" />
-        </div>
+        <Link
+          href="/evaluator"
+          title="Internal Evaluator Mode"
+          className="px-2.5 py-1 rounded-lg bg-blinkit-black text-white text-[10px] font-bold flex items-center gap-1 shadow-xs hover:bg-neutral-800 shrink-0"
+        >
+          <Cpu className="w-3 h-3 text-blinkit-yellow" />
+          <span>Evaluator</span>
+        </Link>
       </div>
 
       {/* Search Bar Visual Token */}
