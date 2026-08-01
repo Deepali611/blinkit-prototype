@@ -26,7 +26,7 @@
 - [x] **Task 3: Deterministic Lapse Detection Module (`lib/detection/detectLapse.ts`)**
   - Implement Stage 1 deterministic rule engine to flag eligible Lapsed Category Expanders based on single category order, age threshold (N days), lack of repeat purchase, and presence/absence of negative signals.
 
-- [ ] **Task 4: AI Reasoning Route (`app/api/reason/route.ts`)**
+- [x] **Task 4: AI Reasoning Route (`app/api/reason/route.ts`)**
   - Build server-side Groq integration to perform Stage 2 reasoning for Path A (confirmed signal) and Path B (inferred probable failure type), selecting evidence, generating grounded reassurance text, and recommending an allowed action (`highlight_seller`, `show_expiry_verification`, `show_replacement_guarantee`, `jump_to_reviews`, `focus_cta`, `no_action`).
 
 - [ ] **Task 5: Deterministic Confidence Gate (`lib/decision/confidenceGate.ts` & `app/api/gate/route.ts`)**
