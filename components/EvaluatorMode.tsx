@@ -8,20 +8,19 @@ import {
   ListFilter,
   CheckCircle2,
   XCircle,
-  AlertTriangle,
   ArrowRight,
   TrendingUp,
   RefreshCw,
-  Search,
-  SlidersHorizontal,
   Layers,
   Sparkles,
+  Eye,
 } from "lucide-react";
 import { MOCK_LAPSED_CASES } from "@/lib/data/mockData";
 import { LapsedCategoryCase } from "@/lib/types/data";
 import { RCCRMetricsSummary, ExperimentLogEntry } from "@/lib/types/metrics";
 import { VerificationCheckResult } from "@/lib/types/verification";
 import { ConfidenceGateResult } from "@/lib/types/decision";
+import OrderAgainIntervention from "./OrderAgainIntervention";
 
 export default function EvaluatorMode() {
   const [activeTab, setActiveTab] = useState<"overview" | "cases" | "metrics" | "logs">("overview");
@@ -83,141 +82,112 @@ export default function EvaluatorMode() {
   const reasoning = gate?.reasoning_output;
 
   return (
-    <div className="space-y-4 max-w-4xl mx-auto">
+    <div className="space-y-3.5 text-xs">
       {/* Evaluator Header */}
-      <div className="bg-blinkit-black text-white p-5 rounded-2xl shadow-md border border-neutral-800 flex items-center justify-between">
+      <div className="bg-blinkit-black text-white p-3.5 rounded-2xl shadow-sm border border-neutral-800 flex items-center justify-between">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="bg-blinkit-yellow text-blinkit-black font-extrabold px-2.5 py-0.5 rounded text-[10px] tracking-wider uppercase">
-              INTERNAL EVALUATOR MODE
+          <div className="flex items-center gap-1.5">
+            <span className="bg-blinkit-yellow text-blinkit-black font-extrabold px-2 py-0.5 rounded text-[9px] tracking-wider uppercase">
+              EVALUATOR MODE
             </span>
-            <span className="bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded text-[10px] font-mono">
-              v1.0-production
+            <span className="bg-neutral-800 text-neutral-300 px-1.5 py-0.5 rounded text-[9px] font-mono">
+              Internal Trace
             </span>
           </div>
-          <h1 className="text-xl font-extrabold text-white mt-1">
-            Mission Recovery — System Architecture & Trace
+          <h1 className="text-sm font-extrabold text-white mt-1">
+            Mission Recovery System Debugger
           </h1>
-          <p className="text-xs text-neutral-400 mt-0.5">
-            Stage 1-6 Deterministic Rules, AI Reasoning, Anti-Hallucination Guard & RCCR Metric Pipeline.
-          </p>
         </div>
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex border-b border-blinkit-border bg-white rounded-xl p-1 gap-1 shadow-xs">
+      <div className="grid grid-cols-4 gap-1 bg-white rounded-xl p-1 border border-blinkit-border shadow-2xs">
         <button
           onClick={() => setActiveTab("overview")}
-          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+          className={`py-1.5 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
             activeTab === "overview"
               ? "bg-blinkit-black text-white shadow-xs"
               : "text-blinkit-muted hover:bg-neutral-100"
           }`}
         >
-          <Layers className="w-3.5 h-3.5" />
-          <span>System Pipeline</span>
+          <Layers className="w-3 h-3" />
+          <span>Pipeline</span>
         </button>
 
         <button
           onClick={() => setActiveTab("cases")}
-          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+          className={`py-1.5 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
             activeTab === "cases"
               ? "bg-blinkit-black text-white shadow-xs"
               : "text-blinkit-muted hover:bg-neutral-100"
           }`}
         >
-          <Cpu className="w-3.5 h-3.5" />
-          <span>Case Trace</span>
+          <Cpu className="w-3 h-3" />
+          <span>Cases</span>
         </button>
 
         <button
           onClick={() => setActiveTab("metrics")}
-          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+          className={`py-1.5 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
             activeTab === "metrics"
               ? "bg-blinkit-black text-white shadow-xs"
               : "text-blinkit-muted hover:bg-neutral-100"
           }`}
         >
-          <BarChart3 className="w-3.5 h-3.5" />
-          <span>RCCR Metrics</span>
+          <BarChart3 className="w-3 h-3" />
+          <span>Metrics</span>
         </button>
 
         <button
           onClick={() => setActiveTab("logs")}
-          className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+          className={`py-1.5 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center gap-1 ${
             activeTab === "logs"
               ? "bg-blinkit-black text-white shadow-xs"
               : "text-blinkit-muted hover:bg-neutral-100"
           }`}
         >
-          <ListFilter className="w-3.5 h-3.5" />
-          <span>Experiment Logs</span>
+          <ListFilter className="w-3 h-3" />
+          <span>Logs</span>
         </button>
       </div>
 
       {/* Tab 1: System Pipeline Architecture */}
       {activeTab === "overview" && (
-        <div className="space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-blinkit-border shadow-sm space-y-4">
-            <h2 className="text-sm font-extrabold text-blinkit-black flex items-center gap-2">
-              <Layers className="w-4 h-4 text-blinkit-green" />
-              6-Stage Safety & Reasoning Architecture
-            </h2>
+        <div className="bg-white p-3.5 rounded-2xl border border-blinkit-border shadow-xs space-y-3">
+          <h2 className="text-xs font-extrabold text-blinkit-black flex items-center gap-1.5 uppercase tracking-wider">
+            <Layers className="w-3.5 h-3.5 text-blinkit-green" />
+            Stage 1 - Stage 6 Architecture
+          </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 1 — Deterministic Lapse Detection
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Rules engine flags Lapsed Category Expanders (1 purchase, &gt;14 days, 0 repeat) and assigns Path A (Known Signal) or Path B (Inferred).
-                </p>
-              </div>
+          <div className="space-y-2 text-[11px]">
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 1 — Deterministic Lapse Detection</span>
+              <p className="text-neutral-600 mt-0.5">Rules engine flags eligible Lapsed Expanders and assigns Path A (Known) vs Path B (Inferred).</p>
+            </div>
 
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 2 — AI Reasoning Core
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Groq LLM selects evidence & generates reassurance. Path B enforces strict constraint: never asserts unconfirmed personal history.
-                </p>
-              </div>
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 2 — AI Reasoning Core</span>
+              <p className="text-neutral-600 mt-0.5">Groq LLM generates grounded reassurance. Path B enforces hard anti-hallucination guard.</p>
+            </div>
 
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 3 — Deterministic Confidence Gate
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Computes score purely from numeric evidence metrics (seller score $25\%$, reorder rate $25\%$, QC expiry $20\%$, reviews $15\%$, guarantee $15\%$). Minimum threshold $0.70$.
-                </p>
-              </div>
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 3 — Deterministic Confidence Gate</span>
+              <p className="text-neutral-600 mt-0.5">5-part weighted score threshold (minimum 0.70 required to proceed).</p>
+            </div>
 
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 4 — Verification & Anti-Hallucination Guard
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Grounds percentage claims against evidence & rejects forbidden personal incident phrases for Path B. Fails closed.
-                </p>
-              </div>
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 4 — Verification Engine</span>
+              <p className="text-neutral-600 mt-0.5">Grounds percentage claims against evidence & fails closed on violations.</p>
+            </div>
 
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 5 — Baseline UI Fallback
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Standard Blinkit UI rendered for control holdout group or when pipeline suppresses intervention.
-                </p>
-              </div>
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 5 — Baseline UI Fallback</span>
+              <p className="text-neutral-600 mt-0.5">Standard Blinkit UI rendered for control holdout or suppressed sessions.</p>
+            </div>
 
-              <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-1">
-                <span className="font-bold text-blinkit-black text-xs block">
-                  Stage 6 — Outcome Logging & RCCR Pipeline
-                </span>
-                <p className="text-neutral-600 leading-snug">
-                  Tracks 30-day repeat conversions to measure Repeat-Category Conversion Rate (RCCR) uplift vs holdout control.
-                </p>
-              </div>
+            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+              <span className="font-bold text-blinkit-black block text-xs">Stage 6 — RCCR Metric Pipeline</span>
+              <p className="text-neutral-600 mt-0.5">Tracks 30-day repeat conversions to compute RCCR uplift vs control holdout.</p>
             </div>
           </div>
         </div>
@@ -225,184 +195,86 @@ export default function EvaluatorMode() {
 
       {/* Tab 2: Case Explorer & AI Decision Trace */}
       {activeTab === "cases" && (
-        <div className="space-y-4">
-          {/* Case Selector */}
-          <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-3">
-            <h2 className="text-xs font-extrabold text-blinkit-black uppercase tracking-wider">
-              Select Customer Case for Full Trace
+        <div className="space-y-3">
+          {/* Debug Case Selector */}
+          <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-xs space-y-2">
+            <h2 className="text-[10px] font-extrabold text-blinkit-black uppercase tracking-wider">
+              Select Customer Case for AI Trace
             </h2>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-1.5">
               {MOCK_LAPSED_CASES.map((c, idx) => (
                 <button
                   key={c.id}
                   onClick={() => setSelectedCaseId(c.id)}
-                  className={`p-2 rounded-xl text-left border transition-all ${
+                  className={`p-1.5 rounded-lg text-center border transition-all ${
                     selectedCaseId === c.id
-                      ? "bg-blinkit-yellow/20 border-blinkit-yellow text-blinkit-black font-bold shadow-xs"
-                      : "bg-neutral-50 border-neutral-200 text-neutral-600 hover:bg-neutral-100"
+                      ? "bg-blinkit-yellow/20 border-blinkit-yellow text-blinkit-black font-bold shadow-2xs"
+                      : "bg-neutral-50 border-neutral-200 text-neutral-600"
                   }`}
                 >
-                  <span className="text-xs block font-bold">Case {idx + 1}</span>
-                  <span className="text-[10px] text-neutral-500 truncate block">
+                  <span className="text-[10px] block font-bold">Case {idx + 1}</span>
+                  <span className="text-[9px] text-neutral-500 truncate block">
                     {c.customer.name.split(" ")[0]}
-                  </span>
-                  <span className="text-[9px] font-mono block mt-0.5 text-blinkit-green font-semibold">
-                    {c.path_type === "PATH_A_KNOWN_SIGNAL" ? "Path A" : "Path B"}
                   </span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Active Case Context Summary */}
-          <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-2 text-xs">
-            <div className="flex items-center justify-between border-b border-blinkit-border pb-2">
-              <span className="font-extrabold text-blinkit-black text-sm">
-                Customer: {activeCase.customer.name} ({activeCase.customer.email})
-              </span>
-              <span className="bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded font-mono text-[10px]">
-                {activeCase.customer.holdout_group ? "Control Holdout" : "Treatment Candidate"}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div>
-                <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Lapsed Purchase</span>
-                <span className="font-bold text-blinkit-black">{activeCase.lapsed_order.product_name}</span>
-                <span className="text-neutral-500 block text-[11px]">
-                  ₹{activeCase.lapsed_order.price} • {activeCase.lapsed_order.days_ago} days ago ({activeCase.lapsed_order.category_name})
-                </span>
-              </div>
-              <div>
-                <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Signal Status</span>
-                <span className="font-bold text-blinkit-black">
-                  {activeCase.lapsed_order.negative_signal?.has_explicit_signal
-                    ? `Path A Explicit Signal (${activeCase.lapsed_order.negative_signal.signal_type})`
-                    : "Path B Inferred (No explicit complaint recorded)"}
-                </span>
-              </div>
-            </div>
+          {/* Render Active Customer Card Preview */}
+          <div className="space-y-1">
+            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block px-1">
+              Customer Card Preview (Clean View)
+            </span>
+            <OrderAgainIntervention caseId={selectedCaseId} showCaseSelector={false} />
           </div>
 
           {/* Trace Execution Stages */}
           {loading ? (
-            <div className="bg-white p-8 rounded-2xl border border-blinkit-border text-center text-xs text-neutral-500 flex items-center justify-center gap-2">
-              <RefreshCw className="w-4 h-4 animate-spin text-blinkit-green" />
-              <span>Tracing Stage 1-6 pipeline execution...</span>
+            <div className="bg-white p-4 rounded-2xl border border-blinkit-border text-center text-xs text-neutral-500 flex items-center justify-center gap-2">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-blinkit-green" />
+              <span>Tracing pipeline...</span>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2 text-[11px]">
               {/* Stage 1 Trace */}
-              <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-1 text-xs">
+              <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-2xs space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-blinkit-black flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-blinkit-green" />
+                  <span className="font-bold text-blinkit-black flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-blinkit-green" />
                     Stage 1: Lapse Detection
                   </span>
-                  <span className="bg-blinkit-green-light text-blinkit-green px-2 py-0.5 rounded font-mono text-[10px] font-bold">
-                    Eligible ({pipelineState?.detection?.priority || "HIGH"})
+                  <span className="bg-blinkit-green-light text-blinkit-green px-1.5 py-0.2 rounded font-mono text-[9px] font-bold">
+                    {activeCase.path_type}
                   </span>
                 </div>
-                <p className="text-neutral-600 mt-1">{pipelineState?.detection?.reason}</p>
+                <p className="text-neutral-600">{pipelineState?.detection?.reason}</p>
               </div>
 
               {/* Stage 2 Trace */}
-              <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-2 text-xs">
-                <div className="flex items-center justify-between border-b border-blinkit-border pb-2">
-                  <span className="font-bold text-blinkit-black flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
-                    Stage 2: AI Reasoning (Groq LLM)
+              <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between border-b border-blinkit-border pb-1.5">
+                  <span className="font-bold text-blinkit-black flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    Stage 2: AI Reasoning (Groq)
                   </span>
-                  <span className="bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-mono text-[10px] font-bold">
+                  <span className="bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded font-mono text-[9px] font-bold">
                     Action: {reasoning?.recommended_action}
                   </span>
                 </div>
-                <div>
-                  <span className="text-[10px] text-neutral-400 font-semibold uppercase">Reasoning Chain</span>
-                  <p className="text-neutral-700 bg-neutral-50 p-2.5 rounded-lg border border-neutral-200 mt-0.5 font-mono text-[11px]">
-                    {reasoning?.reasoning_chain}
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div>
-                    <span className="text-[10px] text-neutral-400 font-semibold uppercase">Headline</span>
-                    <p className="font-bold text-blinkit-black">{reasoning?.reassurance_headline}</p>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-neutral-400 font-semibold uppercase">Reassurance Body</span>
-                    <p className="text-neutral-700">{reasoning?.reassurance_body}</p>
-                  </div>
-                </div>
+                <p className="text-neutral-700 bg-neutral-50 p-2 rounded-lg border border-neutral-200 font-mono text-[10px]">
+                  {reasoning?.reasoning_chain}
+                </p>
               </div>
 
-              {/* Stage 3 Trace */}
-              <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-2 text-xs">
-                <div className="flex items-center justify-between border-b border-blinkit-border pb-2">
-                  <span className="font-bold text-blinkit-black flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-blinkit-green" />
-                    Stage 3: Deterministic Confidence Gate
-                  </span>
-                  <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold ${
-                    gate?.passed_gate ? "bg-blinkit-green-light text-blinkit-green" : "bg-red-100 text-red-700"
-                  }`}>
-                    Score: {((gate?.confidence_score || 0) * 100).toFixed(1)}% ({gate?.confidence_level})
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-5 gap-1.5 pt-1 text-center text-[10px]">
-                  <div className="bg-neutral-50 p-1.5 rounded border">
-                    <span className="block text-neutral-400">Seller Score</span>
-                    <span className="font-bold">{((gate?.breakdown?.seller_consistency_contribution || 0) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="bg-neutral-50 p-1.5 rounded border">
-                    <span className="block text-neutral-400">Reorder Rate</span>
-                    <span className="font-bold">{((gate?.breakdown?.reorder_rate_contribution || 0) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="bg-neutral-50 p-1.5 rounded border">
-                    <span className="block text-neutral-400">QC Expiry</span>
-                    <span className="font-bold">{((gate?.breakdown?.qc_expiry_contribution || 0) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="bg-neutral-50 p-1.5 rounded border">
-                    <span className="block text-neutral-400">Review Trust</span>
-                    <span className="font-bold">{((gate?.breakdown?.review_trust_contribution || 0) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="bg-neutral-50 p-1.5 rounded border">
-                    <span className="block text-neutral-400">Guarantee</span>
-                    <span className="font-bold">{((gate?.breakdown?.replacement_guarantee_contribution || 0) * 100).toFixed(1)}%</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stage 4 Trace */}
-              <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-2 text-xs">
-                <div className="flex items-center justify-between border-b border-blinkit-border pb-2">
-                  <span className="font-bold text-blinkit-black flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-blinkit-green" />
-                    Stage 4: Verification & Anti-Hallucination Guard
-                  </span>
-                  <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold ${
+              {/* Stage 3 & 4 Trace */}
+              <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-blinkit-black">Stage 3 & 4: Safety & Verification</span>
+                  <span className={`px-1.5 py-0.2 rounded font-mono text-[9px] font-bold ${
                     verify?.is_verified ? "bg-blinkit-green-light text-blinkit-green" : "bg-red-100 text-red-700"
                   }`}>
-                    {verify?.final_decision}
-                  </span>
-                </div>
-                <div className="flex gap-4 text-[11px]">
-                  <span className={`flex items-center gap-1 font-medium ${
-                    verify?.path_b_safety_check_passed ? "text-blinkit-green" : "text-red-600"
-                  }`}>
-                    {verify?.path_b_safety_check_passed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                    Path B Safety Check
-                  </span>
-                  <span className={`flex items-center gap-1 font-medium ${
-                    verify?.grounding_check_passed ? "text-blinkit-green" : "text-red-600"
-                  }`}>
-                    {verify?.grounding_check_passed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                    Evidence Grounding
-                  </span>
-                  <span className={`flex items-center gap-1 font-medium ${
-                    verify?.action_check_passed ? "text-blinkit-green" : "text-red-600"
-                  }`}>
-                    {verify?.action_check_passed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                    Action Consistency
+                    Gate: {((gate?.confidence_score || 0) * 100).toFixed(0)}% | {verify?.final_decision}
                   </span>
                 </div>
               </div>
@@ -413,66 +285,21 @@ export default function EvaluatorMode() {
 
       {/* Tab 3: Metrics Dashboard */}
       {activeTab === "metrics" && metricsSummary && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm text-center">
-              <span className="text-[10px] font-bold text-blinkit-green uppercase tracking-wider block">
-                Treatment RCCR
-              </span>
-              <span className="text-2xl font-extrabold text-blinkit-green block mt-1">
-                {metricsSummary.treatment_rccr}%
-              </span>
-              <span className="text-[10px] text-neutral-400 block mt-0.5">
-                {metricsSummary.treatment_conversions} / {metricsSummary.treatment_total} repeat conversions
-              </span>
+        <div className="space-y-3">
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-2xs text-center">
+              <span className="text-[9px] font-bold text-blinkit-green uppercase block">Treatment RCCR</span>
+              <span className="text-xl font-extrabold text-blinkit-green block mt-0.5">{metricsSummary.treatment_rccr}%</span>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm text-center">
-              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block">
-                Control Holdout RCCR
-              </span>
-              <span className="text-2xl font-extrabold text-neutral-700 block mt-1">
-                {metricsSummary.control_rccr}%
-              </span>
-              <span className="text-[10px] text-neutral-400 block mt-0.5">
-                {metricsSummary.control_conversions} / {metricsSummary.control_total} repeat conversions
-              </span>
+            <div className="bg-white p-3 rounded-2xl border border-blinkit-border shadow-2xs text-center">
+              <span className="text-[9px] font-bold text-neutral-500 uppercase block">Control RCCR</span>
+              <span className="text-xl font-extrabold text-neutral-700 block mt-0.5">{metricsSummary.control_rccr}%</span>
             </div>
 
-            <div className="bg-gradient-to-br from-emerald-500 to-green-600 text-white p-4 rounded-2xl shadow-sm text-center">
-              <span className="text-[10px] font-bold uppercase tracking-wider opacity-90 block">
-                Absolute RCCR Uplift (Δ)
-              </span>
-              <span className="text-2xl font-extrabold block mt-1">
-                +{metricsSummary.rccr_absolute_uplift}%
-              </span>
-              <span className="text-[10px] opacity-90 block mt-0.5">
-                +{metricsSummary.rccr_relative_lift}% relative conversion lift
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-2xl border border-blinkit-border shadow-sm space-y-3 text-xs">
-            <h3 className="font-bold text-blinkit-black text-xs uppercase tracking-wider">
-              Path Specific Conversion & Safety Guard Rates
-            </h3>
-            <div className="grid grid-cols-4 gap-2 text-center">
-              <div className="bg-neutral-50 p-2.5 rounded-xl border">
-                <span className="text-[10px] text-neutral-400 block">Path A RCCR</span>
-                <span className="font-extrabold text-blinkit-black text-sm">{metricsSummary.path_a_rccr}%</span>
-              </div>
-              <div className="bg-neutral-50 p-2.5 rounded-xl border">
-                <span className="text-[10px] text-neutral-400 block">Path B RCCR</span>
-                <span className="font-extrabold text-blinkit-black text-sm">{metricsSummary.path_b_rccr}%</span>
-              </div>
-              <div className="bg-neutral-50 p-2.5 rounded-xl border">
-                <span className="text-[10px] text-neutral-400 block">Confidence Pass</span>
-                <span className="font-extrabold text-blinkit-green text-sm">{metricsSummary.gate_pass_rate}%</span>
-              </div>
-              <div className="bg-neutral-50 p-2.5 rounded-xl border">
-                <span className="text-[10px] text-neutral-400 block">Verification Pass</span>
-                <span className="font-extrabold text-blinkit-green text-sm">{metricsSummary.verification_pass_rate}%</span>
-              </div>
+            <div className="bg-gradient-to-br from-emerald-500 to-green-600 text-white p-3 rounded-2xl shadow-2xs text-center">
+              <span className="text-[9px] font-bold uppercase block opacity-90">Uplift (Δ)</span>
+              <span className="text-xl font-extrabold block mt-0.5">+{metricsSummary.rccr_absolute_uplift}%</span>
             </div>
           </div>
         </div>
@@ -480,63 +307,31 @@ export default function EvaluatorMode() {
 
       {/* Tab 4: System Experiment Logs */}
       {activeTab === "logs" && (
-        <div className="bg-white rounded-2xl border border-blinkit-border shadow-sm overflow-hidden text-xs">
-          <div className="p-3 bg-neutral-50 border-b border-blinkit-border flex items-center justify-between">
-            <span className="font-bold text-blinkit-black text-xs uppercase tracking-wider">
-              Live System Experiment Logs ({logs.length} entries)
-            </span>
-            <span className="text-[10px] text-neutral-500 font-mono">Stage 6 Logging</span>
+        <div className="bg-white rounded-2xl border border-blinkit-border shadow-2xs overflow-hidden text-[11px]">
+          <div className="p-2.5 bg-neutral-50 border-b border-blinkit-border font-bold text-blinkit-black uppercase tracking-wider">
+            Stage 6 Logs ({logs.length} entries)
           </div>
-
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left font-mono">
               <thead>
-                <tr className="bg-neutral-100 text-neutral-600 border-b border-neutral-200 text-[10px] uppercase font-bold">
-                  <th className="p-2.5">Time</th>
-                  <th className="p-2.5">Customer</th>
-                  <th className="p-2.5">Path</th>
-                  <th className="p-2.5">Action</th>
-                  <th className="p-2.5 text-center">Gate</th>
-                  <th className="p-2.5 text-center">Verify</th>
-                  <th className="p-2.5 text-center">Repeat Conversion</th>
+                <tr className="bg-neutral-100 text-neutral-600 text-[9px] uppercase border-b">
+                  <th className="p-2">Customer</th>
+                  <th className="p-2">Path</th>
+                  <th className="p-2 text-center">Gate</th>
+                  <th className="p-2 text-center">Outcome</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100 font-mono text-[11px]">
-                {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-neutral-50">
-                    <td className="p-2.5 text-neutral-400 whitespace-nowrap">
-                      {new Date(log.timestamp).toLocaleTimeString()}
-                    </td>
-                    <td className="p-2.5 font-sans font-medium text-blinkit-black">
-                      {log.customer_name}
-                    </td>
-                    <td className="p-2.5 text-neutral-600">
-                      {log.path_type === "PATH_A_KNOWN_SIGNAL" ? "Path A" : "Path B"}
-                    </td>
-                    <td className="p-2.5 font-sans text-neutral-700">
-                      {log.stage2_action_recommended}
-                    </td>
-                    <td className="p-2.5 text-center">
-                      <span className={`px-1.5 py-0.2 rounded text-[10px] ${
-                        log.stage3_passed_gate ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                      }`}>
-                        {((log.stage3_confidence_score || 0) * 100).toFixed(0)}%
-                      </span>
-                    </td>
-                    <td className="p-2.5 text-center">
-                      {log.stage4_verified ? (
-                        <span className="text-green-600 font-bold">✓</span>
-                      ) : (
-                        <span className="text-red-600 font-bold">✕</span>
-                      )}
-                    </td>
-                    <td className="p-2.5 text-center">
+              <tbody className="divide-y divide-neutral-100">
+                {logs.slice(0, 10).map((log) => (
+                  <tr key={log.id}>
+                    <td className="p-2 font-sans">{log.customer_name}</td>
+                    <td className="p-2">{log.path_type === "PATH_A_KNOWN_SIGNAL" ? "Path A" : "Path B"}</td>
+                    <td className="p-2 text-center">{((log.stage3_confidence_score || 0) * 100).toFixed(0)}%</td>
+                    <td className="p-2 text-center">
                       {log.converted_repeat_order ? (
-                        <span className="bg-blinkit-green-light text-blinkit-green font-bold px-2 py-0.5 rounded text-[10px]">
-                          CONVERTED ({log.days_to_repeat_purchase}d)
-                        </span>
+                        <span className="text-blinkit-green font-bold">CONVERTED</span>
                       ) : (
-                        <span className="text-neutral-400 text-[10px]">No repeat</span>
+                        <span className="text-neutral-400">No repeat</span>
                       )}
                     </td>
                   </tr>

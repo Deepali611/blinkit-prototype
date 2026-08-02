@@ -18,9 +18,9 @@ export default function BottomNav() {
     <nav
       id="bottom-navigation"
       aria-label="Bottom Navigation"
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-blinkit-border shadow-lg max-w-md mx-auto"
+      className="shrink-0 z-50 bg-white border-t border-blinkit-border shadow-md w-full"
     >
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around h-14 px-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -38,7 +38,7 @@ export default function BottomNav() {
             >
               <div className="relative">
                 <Icon
-                  className={`w-6 h-6 stroke-[2] ${
+                  className={`w-5 h-5 stroke-[2] ${
                     isActive ? "text-blinkit-green" : "text-blinkit-black/70"
                   }`}
                 />
@@ -46,7 +46,7 @@ export default function BottomNav() {
                   <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-blinkit-green rounded-full" />
                 )}
               </div>
-              <span className="text-[11px] mt-1 tracking-tight">{item.label}</span>
+              <span className="text-[10px] mt-0.5 tracking-tight">{item.label}</span>
             </Link>
           );
         })}

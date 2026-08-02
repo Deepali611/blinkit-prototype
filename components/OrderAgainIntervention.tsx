@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { ShieldCheck, RefreshCw, Star, Award, CheckCircle2, ShoppingBag } from "lucide-react";
 import { MOCK_LAPSED_CASES } from "@/lib/data/mockData";
 import { LapsedCategoryCase } from "@/lib/types/data";
@@ -9,8 +8,16 @@ import { VerificationCheckResult } from "@/lib/types/verification";
 import { ConfidenceGateResult } from "@/lib/types/decision";
 import { AIReasoningOutput } from "@/lib/types/reasoning";
 
-export default function OrderAgainIntervention() {
-  const [selectedCaseId, setSelectedCaseId] = useState<string>("case-01");
+interface OrderAgainInterventionProps {
+  caseId?: string;
+  showCaseSelector?: boolean; // Default false for customer views
+}
+
+export default function OrderAgainIntervention({
+  caseId = "case-01",
+  showCaseSelector = false,
+}: OrderAgainInterventionProps) {
+  const [selectedCaseId, setSelectedCaseId] = useState<string>(caseId);
   const [loading, setLoading] = useState<boolean>(false);
   const [pipelineData, setPipelineData] = useState<{
     caseData: LapsedCategoryCase;
@@ -57,64 +64,47 @@ export default function OrderAgainIntervention() {
   const isApproved = verifyResult?.is_verified && gateResult?.passed_gate && !isHoldout;
 
   return (
-    <div className="space-y-4">
-      {/* Interactive Case Switcher Bar */}
-      <div className="bg-white p-3 rounded-xl border border-blinkit-border shadow-sm space-y-2">
-        <div className="flex items-center justify-between text-xs text-blinkit-muted">
-          <span className="font-semibold text-blinkit-black uppercase tracking-wider text-[11px]">
-            Demo Case Selector
+    <div className="space-y-3">
+      {/* Optional Debug Selector only when explicitly requested (e.g., in Evaluator) */}
+      {showCaseSelector && (
+        <div className="bg-white p-3 rounded-xl border border-blinkit-border shadow-sm space-y-2">
+          <span className="text-[10px] font-bold text-blinkit-black uppercase tracking-wider block">
+            Debug Case Selector (Evaluator Mode Only)
           </span>
-          <span className="bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded font-mono text-[10px]">
-            {activeCase.path_type}
-          </span>
+          <div className="grid grid-cols-5 gap-1">
+            {MOCK_LAPSED_CASES.map((c, idx) => (
+              <button
+                key={c.id}
+                onClick={() => setSelectedCaseId(c.id)}
+                className={`py-1 rounded text-[10px] font-bold border text-center ${
+                  selectedCaseId === c.id
+                    ? "bg-blinkit-yellow/20 border-blinkit-yellow text-blinkit-black"
+                    : "bg-neutral-50 text-neutral-600"
+                }`}
+              >
+                Case {idx + 1}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-5 gap-1.5">
-          {MOCK_LAPSED_CASES.map((c, idx) => (
-            <button
-              key={c.id}
-              onClick={() => setSelectedCaseId(c.id)}
-              className={`py-1.5 px-1 rounded-lg text-[11px] font-medium border text-center transition-all ${
-                selectedCaseId === c.id
-                  ? "bg-blinkit-yellow/20 border-blinkit-yellow text-blinkit-black font-bold shadow-xs"
-                  : "bg-neutral-50 border-neutral-200 text-neutral-600 hover:bg-neutral-100"
-              }`}
-            >
-              Case {idx + 1}
-              <span className="block text-[9px] text-neutral-400 font-normal truncate">
-                {c.customer.name.split(" ")[0]}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Primary Native Blinkit Order Again Card */}
-      <div className="bg-white rounded-2xl border border-blinkit-border shadow-sm overflow-hidden transition-all">
-        {/* Card Header Tag */}
-        <div className="bg-neutral-50 border-b border-blinkit-border px-4 py-2 flex items-center justify-between text-xs">
+      <div className="bg-white rounded-2xl border border-blinkit-border shadow-xs overflow-hidden transition-all">
+        {/* Clean Customer Card Header */}
+        <div className="bg-neutral-50/80 border-b border-blinkit-border px-3.5 py-2 flex items-center justify-between text-[11px]">
           <span className="text-blinkit-muted font-medium">
-            Ordered {order.days_ago} days ago ({order.category_name})
+            Ordered {order.days_ago} days ago
           </span>
-          {isHoldout ? (
-            <span className="bg-neutral-200 text-neutral-700 px-2 py-0.5 rounded text-[10px] font-semibold">
-              Control Holdout
-            </span>
-          ) : isApproved ? (
-            <span className="bg-blinkit-green-light text-blinkit-green border border-blinkit-green/20 px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1">
-              <ShieldCheck className="w-3 h-3" />
-              Verified Reassurance
-            </span>
-          ) : (
-            <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">
-              Baseline State
-            </span>
-          )}
+          <span className="text-blinkit-muted font-medium text-[10px]">
+            {order.category_name}
+          </span>
         </div>
 
         {/* Product Details Section */}
-        <div className="p-4 flex items-center gap-3">
+        <div className="p-3.5 flex items-center gap-3">
           {/* Product Thumbnail */}
-          <div className="w-16 h-16 rounded-xl bg-neutral-100 border border-neutral-200 overflow-hidden shrink-0 relative flex items-center justify-center">
+          <div className="w-14 h-14 rounded-xl bg-neutral-100 border border-neutral-200 overflow-hidden shrink-0 relative flex items-center justify-center">
             {order.product_image ? (
               <img
                 src={order.product_image}
@@ -122,58 +112,54 @@ export default function OrderAgainIntervention() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <ShoppingBag className="w-8 h-8 text-neutral-400" />
+              <ShoppingBag className="w-6 h-6 text-neutral-400" />
             )}
           </div>
 
           {/* Title & Price */}
           <div className="flex-1 min-w-0">
-            <span className="text-[10px] font-semibold uppercase text-blinkit-muted tracking-wider block">
+            <span className="text-[9px] font-bold uppercase text-blinkit-muted tracking-wider block">
               {product.brand_name}
             </span>
-            <h2 className="text-sm font-bold text-blinkit-black truncate leading-snug">
+            <h2 className="text-xs font-bold text-blinkit-black truncate leading-snug">
               {order.product_name}
             </h2>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm font-extrabold text-blinkit-black">
+              <span className="text-xs font-extrabold text-blinkit-black">
                 ₹{order.price}
-              </span>
-              <span className="text-[10px] text-blinkit-green bg-blinkit-green-light px-1.5 py-0.2 rounded font-semibold">
-                {product.seller_consistency_score}% Verified Quality
               </span>
             </div>
           </div>
 
           {/* Order Again Button */}
-          <button className="bg-blinkit-green hover:bg-blinkit-green-dark text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-sm transition-transform active:scale-95 shrink-0 flex items-center gap-1">
-            <span>Add</span>
-            <span className="text-[10px] font-normal">+</span>
+          <button className="bg-blinkit-green hover:bg-blinkit-green-dark text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-xs transition-transform active:scale-95 shrink-0 flex items-center gap-1">
+            <span>ADD</span>
           </button>
         </div>
 
-        {/* Mission Recovery Interventions Row (Renders when Stage 1-4 pipeline approves) */}
+        {/* Reassurance Row — Displayed cleanly when pipeline approves without debug text */}
         {loading ? (
-          <div className="bg-neutral-50 p-3 border-t border-blinkit-border flex items-center justify-center gap-2 text-xs text-blinkit-muted">
-            <RefreshCw className="w-4 h-4 animate-spin text-blinkit-green" />
-            <span>Evaluating Stage 1-4 AI & Safety Pipeline...</span>
+          <div className="bg-neutral-50 p-2.5 border-t border-blinkit-border flex items-center justify-center gap-2 text-[11px] text-blinkit-muted">
+            <RefreshCw className="w-3.5 h-3.5 animate-spin text-blinkit-green" />
+            <span>Loading...</span>
           </div>
         ) : isApproved && reasoning ? (
-          <div className="bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 border-t border-blinkit-green/20 p-3.5 space-y-2">
+          <div className="bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 border-t border-blinkit-green/20 p-3 space-y-1.5">
             <div className="flex items-start gap-2">
-              <div className="p-1 rounded-full bg-blinkit-green text-white shrink-0 mt-0.5">
+              <div className="p-0.5 rounded-full bg-blinkit-green text-white shrink-0 mt-0.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-xs font-extrabold text-blinkit-black leading-tight flex items-center gap-1.5">
+                <h3 className="text-xs font-extrabold text-blinkit-black leading-tight">
                   {reasoning.reassurance_headline}
                 </h3>
-                <p className="text-[11px] text-neutral-700 mt-0.5 leading-normal">
+                <p className="text-[11px] text-neutral-700 mt-0.5 leading-snug">
                   {reasoning.reassurance_body}
                 </p>
               </div>
             </div>
 
-            {/* Evidence Badges & Action Token */}
+            {/* Factual Guarantee Badges */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-blinkit-green/10 text-[10px]">
               {reasoning.recommended_action === "show_expiry_verification" && (
                 <span className="bg-white border border-blinkit-green/30 text-blinkit-green font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
@@ -202,19 +188,9 @@ export default function OrderAgainIntervention() {
                   Rated {product.average_rating}★ ({product.review_count} Reviews)
                 </span>
               )}
-
-              <span className="ml-auto text-[9px] text-neutral-500 font-mono">
-                Conf: {((gateResult?.confidence_score || 0) * 100).toFixed(0)}% | Verified
-              </span>
             </div>
           </div>
-        ) : (
-          /* Baseline State for Control Holdout or Suppressed Pipeline */
-          <div className="bg-neutral-50 px-4 py-2 border-t border-blinkit-border text-[11px] text-neutral-500 flex items-center justify-between">
-            <span>Standard re-order row (Baseline state)</span>
-            <span className="font-mono text-[9px]">No Intervention</span>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
