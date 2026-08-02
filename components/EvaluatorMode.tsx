@@ -13,7 +13,6 @@ import {
   RefreshCw,
   Layers,
   Sparkles,
-  Eye,
 } from "lucide-react";
 import { MOCK_LAPSED_CASES } from "@/lib/data/mockData";
 import { LapsedCategoryCase } from "@/lib/types/data";
@@ -21,6 +20,7 @@ import { RCCRMetricsSummary, ExperimentLogEntry } from "@/lib/types/metrics";
 import { VerificationCheckResult } from "@/lib/types/verification";
 import { ConfidenceGateResult } from "@/lib/types/decision";
 import OrderAgainIntervention from "./OrderAgainIntervention";
+import EvaluatorPipelineDiagram from "./EvaluatorPipelineDiagram";
 
 export default function EvaluatorMode() {
   const [activeTab, setActiveTab] = useState<"overview" | "cases" | "metrics" | "logs">("overview");
@@ -91,11 +91,11 @@ export default function EvaluatorMode() {
               EVALUATOR MODE
             </span>
             <span className="bg-neutral-800 text-neutral-300 px-1.5 py-0.5 rounded text-[9px] font-mono">
-              Internal Trace
+              Internal Debugger
             </span>
           </div>
           <h1 className="text-sm font-extrabold text-white mt-1">
-            Mission Recovery System Debugger
+            Mission Recovery System Trace
           </h1>
         </div>
       </div>
@@ -151,47 +151,8 @@ export default function EvaluatorMode() {
         </button>
       </div>
 
-      {/* Tab 1: System Pipeline Architecture */}
-      {activeTab === "overview" && (
-        <div className="bg-white p-3.5 rounded-2xl border border-blinkit-border shadow-xs space-y-3">
-          <h2 className="text-xs font-extrabold text-blinkit-black flex items-center gap-1.5 uppercase tracking-wider">
-            <Layers className="w-3.5 h-3.5 text-blinkit-green" />
-            Stage 1 - Stage 6 Architecture
-          </h2>
-
-          <div className="space-y-2 text-[11px]">
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 1 — Deterministic Lapse Detection</span>
-              <p className="text-neutral-600 mt-0.5">Rules engine flags eligible Lapsed Expanders and assigns Path A (Known) vs Path B (Inferred).</p>
-            </div>
-
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 2 — AI Reasoning Core</span>
-              <p className="text-neutral-600 mt-0.5">Groq LLM generates grounded reassurance. Path B enforces hard anti-hallucination guard.</p>
-            </div>
-
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 3 — Deterministic Confidence Gate</span>
-              <p className="text-neutral-600 mt-0.5">5-part weighted score threshold (minimum 0.70 required to proceed).</p>
-            </div>
-
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 4 — Verification Engine</span>
-              <p className="text-neutral-600 mt-0.5">Grounds percentage claims against evidence & fails closed on violations.</p>
-            </div>
-
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 5 — Baseline UI Fallback</span>
-              <p className="text-neutral-600 mt-0.5">Standard Blinkit UI rendered for control holdout or suppressed sessions.</p>
-            </div>
-
-            <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
-              <span className="font-bold text-blinkit-black block text-xs">Stage 6 — RCCR Metric Pipeline</span>
-              <p className="text-neutral-600 mt-0.5">Tracks 30-day repeat conversions to compute RCCR uplift vs control holdout.</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Tab 1: System Pipeline Architecture Interactive Diagram */}
+      {activeTab === "overview" && <EvaluatorPipelineDiagram />}
 
       {/* Tab 2: Case Explorer & AI Decision Trace */}
       {activeTab === "cases" && (
@@ -224,7 +185,7 @@ export default function EvaluatorMode() {
           {/* Render Active Customer Card Preview */}
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block px-1">
-              Customer Card Preview (Clean View)
+              Customer Card Preview
             </span>
             <OrderAgainIntervention caseId={selectedCaseId} showCaseSelector={false} />
           </div>
