@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ShieldCheck, RefreshCw, ChevronRight, Star, Award } from "lucide-react";
+import { ShoppingBag, ChevronRight } from "lucide-react";
 import { MOCK_LAPSED_CASES } from "@/lib/data/mockData";
 import { LapsedCategoryCase } from "@/lib/types/data";
 import { VerificationCheckResult } from "@/lib/types/verification";
@@ -10,7 +10,7 @@ import { AIReasoningOutput } from "@/lib/types/reasoning";
 
 interface CategoryReEntryRowProps {
   caseId?: string;
-  showCaseSelector?: boolean; // Default false for customer views
+  showCaseSelector?: boolean;
 }
 
 export default function CategoryReEntryRow({
@@ -57,15 +57,16 @@ export default function CategoryReEntryRow({
   const verifyResult = pipelineData?.verificationResult;
   const reasoning = pipelineData?.reasoningOutput;
   const product = activeCase.product_evidence;
+  const order = activeCase.lapsed_order;
 
   const isHoldout = activeCase.customer.holdout_group;
   const isApproved = verifyResult?.is_verified && gateResult?.passed_gate && !isHoldout;
 
   return (
     <div className="space-y-3">
-      {/* Optional Debug Case Selector for Evaluator Mode */}
+      {/* Optional Debug Selector only when explicitly requested (Evaluator Mode) */}
       {showCaseSelector && (
-        <div className="bg-white p-3 rounded-xl border border-blinkit-border shadow-sm space-y-2">
+        <div className="bg-white p-2.5 rounded-xl border border-blinkit-border shadow-xs space-y-1.5">
           <span className="text-[10px] font-bold text-blinkit-black uppercase tracking-wider block">
             Debug Case Selector (Evaluator Only)
           </span>
@@ -87,72 +88,99 @@ export default function CategoryReEntryRow({
         </div>
       )}
 
-      {/* Category Header & Product Re-Entry PDP Mockup */}
-      <div className="bg-white rounded-2xl border border-blinkit-border shadow-xs overflow-hidden p-3.5 space-y-3">
-        <div className="flex items-center justify-between border-b border-blinkit-border pb-2.5">
-          <div>
-            <span className="text-[9px] font-bold text-blinkit-green uppercase tracking-wider bg-blinkit-green-light px-2 py-0.5 rounded-full">
-              {product.category_name}
+      {/* Campaign-Strip Horizontal Section Container */}
+      <div className="bg-gradient-to-br from-emerald-50/90 via-green-50/50 to-amber-50/40 rounded-2xl border border-blinkit-green/20 p-3.5 space-y-3 shadow-xs">
+        
+        {/* Campaign Header & Category Tab/Chip Row */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-blinkit-green bg-white border border-blinkit-green/30 px-2.5 py-0.5 rounded-full shadow-2xs">
+              Verified Category Spotlight
             </span>
-            <h2 className="text-sm font-bold text-blinkit-black mt-1">
-              {product.product_name}
-            </h2>
+            <span className="text-[10px] text-blinkit-muted font-medium">
+              10-Minute Delivery
+            </span>
           </div>
-          <span className="text-xs font-extrabold text-blinkit-black bg-neutral-100 px-2.5 py-1 rounded-xl">
-            ₹{activeCase.lapsed_order.price}
-          </span>
+
+          {/* Interactive Category Chips Row */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {MOCK_LAPSED_CASES.map((c) => {
+              const isSelected = c.id === selectedCaseId;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setSelectedCaseId(c.id)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold whitespace-nowrap border transition-all ${
+                    isSelected
+                      ? "bg-blinkit-green text-white border-blinkit-green shadow-2xs"
+                      : "bg-white text-neutral-700 border-neutral-200 hover:border-blinkit-green/40"
+                  }`}
+                >
+                  {c.product_evidence.category_name}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Inline Trust Row — Real Blinkit PDP row convention */}
-        {loading ? (
-          <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200 text-[11px] text-neutral-500 flex items-center justify-center gap-2">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin text-blinkit-green" />
-            <span>Loading...</span>
-          </div>
-        ) : isApproved && reasoning ? (
-          <div className="bg-[#EAF7E6] border border-blinkit-green/30 rounded-xl p-3 flex items-center justify-between shadow-2xs transition-all">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-blinkit-green text-white flex items-center justify-center shrink-0 shadow-2xs">
-                {reasoning.recommended_action === "show_replacement_guarantee" ? (
-                  <RefreshCw className="w-3.5 h-3.5" />
-                ) : reasoning.recommended_action === "jump_to_reviews" ? (
-                  <Star className="w-3.5 h-3.5 fill-white" />
-                ) : (
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                )}
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-xs font-extrabold text-blinkit-black">
-                    {reasoning.reassurance_headline}
-                  </h3>
-                  <span className="text-[8px] font-bold bg-white text-blinkit-green border border-blinkit-green/30 px-1.5 py-0.2 rounded-full uppercase">
-                    72h Guarantee
-                  </span>
-                </div>
-                <p className="text-[10px] text-neutral-700 leading-tight mt-0.5">
-                  {reasoning.reassurance_body}
-                </p>
-              </div>
+        {/* Product Tile Container (Blinkit Promotional Tile Pattern) */}
+        <div className="bg-white rounded-xl border border-neutral-200/80 p-3 shadow-xs space-y-2.5 transition-all">
+          <div className="flex items-start gap-3">
+            {/* Product Image */}
+            <div className="w-16 h-16 rounded-lg bg-neutral-50 border border-neutral-150 overflow-hidden shrink-0 relative flex items-center justify-center">
+              {order.product_image ? (
+                <img
+                  src={order.product_image}
+                  alt={order.product_name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <ShoppingBag className="w-6 h-6 text-neutral-400" />
+              )}
             </div>
-            <ChevronRight className="w-4 h-4 text-blinkit-green shrink-0" />
-          </div>
-        ) : (
-          /* Native Default Blinkit PDP Row (72 hours replacement baseline) */
-          <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-2.5 flex items-center justify-between text-xs text-neutral-600">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-neutral-500" />
-              <span className="font-medium text-[11px]">72 hours replacement policy</span>
-            </div>
-          </div>
-        )}
 
-        <div className="pt-1 flex items-center justify-between text-xs text-blinkit-muted">
-          <span className="text-[11px]">Seller: <strong className="text-blinkit-black">{product.seller_name}</strong></span>
-          <button className="bg-blinkit-green text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow-2xs">
-            ADD
-          </button>
+            {/* Product Metadata & Price */}
+            <div className="flex-1 min-w-0">
+              <span className="text-[9px] font-bold uppercase text-blinkit-muted tracking-wider block">
+                {product.brand_name}
+              </span>
+              <h3 className="text-xs font-bold text-blinkit-black truncate leading-snug">
+                {order.product_name}
+              </h3>
+              <div className="flex items-center justify-between mt-1.5">
+                <span className="text-sm font-extrabold text-blinkit-black">
+                  ₹{order.price}
+                </span>
+                <button className="bg-white border-2 border-blinkit-green text-blinkit-green hover:bg-blinkit-green hover:text-white font-extrabold text-xs px-3 py-1 rounded-lg transition-colors shadow-2xs">
+                  + ADD
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Reassurance Line — Short trust line directly beneath product tile */}
+          {loading ? (
+            <div className="pt-2 border-t border-neutral-100 text-[10px] text-neutral-400 italic">
+              Loading details...
+            </div>
+          ) : isApproved && reasoning ? (
+            <div className="pt-2 border-t border-emerald-100 flex items-center gap-1.5 text-[11px] text-emerald-800 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-blinkit-green shrink-0" />
+              <span className="font-semibold text-blinkit-black">
+                {reasoning.reassurance_headline}:
+              </span>
+              <span className="truncate text-neutral-700">
+                {reasoning.reassurance_body}
+              </span>
+            </div>
+          ) : (
+            <div className="pt-2 border-t border-neutral-100 flex items-center gap-1.5 text-[10px] text-neutral-500">
+              <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 shrink-0" />
+              <span>Standard 72 hours replacement guarantee applicable</span>
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );
