@@ -78,6 +78,10 @@ export function getAllLogs(): ExperimentLogEntry[] {
   return EXPERIMENT_LOGS;
 }
 
+export function getRecentLogs(limit: number = 20): ExperimentLogEntry[] {
+  return EXPERIMENT_LOGS.slice(0, limit);
+}
+
 /**
  * Compute Repeat-Category Conversion Rate (RCCR) and Uplift Metrics
  */

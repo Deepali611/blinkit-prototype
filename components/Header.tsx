@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { MapPin, Search, Cpu } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 
 export default function Header() {
   return (
@@ -21,13 +20,6 @@ export default function Header() {
             </p>
           </div>
         </div>
-        <Link
-          href="/evaluator"
-          title="Internal Evaluator Mode"
-          className="p-1.5 rounded-full bg-blinkit-black/10 text-blinkit-black hover:bg-blinkit-black/20 shrink-0 transition-colors"
-        >
-          <Cpu className="w-3.5 h-3.5" />
-        </Link>
       </div>
 
       {/* Search Bar Visual Token */}

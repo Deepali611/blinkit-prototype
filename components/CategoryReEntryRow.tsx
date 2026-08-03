@@ -64,30 +64,6 @@ export default function CategoryReEntryRow({
 
   return (
     <div className="space-y-3">
-      {/* Optional Debug Selector only when explicitly requested (Evaluator Mode) */}
-      {showCaseSelector && (
-        <div className="bg-white p-2.5 rounded-xl border border-blinkit-border shadow-xs space-y-1.5">
-          <span className="text-[10px] font-bold text-blinkit-black uppercase tracking-wider block">
-            Debug Case Selector (Evaluator Only)
-          </span>
-          <div className="grid grid-cols-5 gap-1">
-            {MOCK_LAPSED_CASES.map((c, idx) => (
-              <button
-                key={c.id}
-                onClick={() => setSelectedCaseId(c.id)}
-                className={`py-1 rounded text-[10px] font-bold border text-center ${
-                  selectedCaseId === c.id
-                    ? "bg-blinkit-green-light border-blinkit-green text-blinkit-green"
-                    : "bg-neutral-50 text-neutral-600"
-                }`}
-              >
-                Case {idx + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Campaign-Strip Horizontal Section Container */}
       <div className="bg-gradient-to-br from-emerald-50/90 via-green-50/50 to-amber-50/40 rounded-2xl border border-blinkit-green/20 p-3.5 space-y-3 shadow-xs">
         
