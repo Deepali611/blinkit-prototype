@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+evaluator-app/node_modules
 /.pnp
 .pnp.js
 
@@ -9,6 +10,8 @@
 # next.js
 /.next/
 /out/
+evaluator-app/.next/
+evaluator-app/out/
 
 # production
 /build
