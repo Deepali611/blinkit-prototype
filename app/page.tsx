@@ -57,7 +57,7 @@ export default function HomePage() {
         </div>
 
         {/* Clean Customer-Facing Order Again Card */}
-        <OrderAgainIntervention caseId="case-01" showCaseSelector={false} />
+        <OrderAgainIntervention />
       </div>
 
       {/* Blinkit Categories Grid */}
