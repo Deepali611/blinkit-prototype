@@ -14,7 +14,7 @@ export function generateFallbackReasoning(input: AIReasoningInput): AIReasoningO
     let failureType: FailureType = "quality_expiry";
     let action: RecommendedAction = "show_expiry_verification";
     let headline = "Freshness & Batch Quality Guaranteed";
-    let body = `Your past order of ${lapsed_order.product_name} was flagged for quality concerns. All items in this category now undergo strict thermal QC before dispatch.`;
+    let body = `Your past order of ${lapsed_order.product_name} was flagged for quality concerns. All items in this category undergo strict thermal QC before dispatch.`;
 
     if (signalType === "support_ticket") {
       failureType = "unresolved_support";
@@ -25,7 +25,7 @@ export function generateFallbackReasoning(input: AIReasoningInput): AIReasoningO
       failureType = "quality_expiry";
       action = "show_expiry_verification";
       headline = "QC-Verified Shelf Life Guarantee";
-      body = `We hear your feedback on your previous rating. Every item in ${product_evidence.category_name} is now dispatch-checked with ${product_evidence.expiry_verification_data.shelf_life_guarantee}.`;
+      body = `We hear your feedback on your previous rating. Every item in ${product_evidence.category_name} is dispatch-checked with ${product_evidence.expiry_verification_data.shelf_life_guarantee}.`;
     }
 
     return {
@@ -103,6 +103,7 @@ Input Context:
 CRITICAL SAFETY & PATH RULES:
 1. PATH A (KNOWN SIGNAL): You may reference the specific confirmed past incident (e.g. return, rating, support ticket) to offer targeted reassurance.
 2. PATH B (INFERRED SIGNAL - HARD SAFETY RULE): No explicit complaint exists on record. You MUST NOT claim or imply you know a specific problem happened to this customer (NEVER say "We know your last order arrived expired" or "We apologize for your bad experience"). Stay general, objective, and evidence-forward (e.g., "Items in this category are verified for freshness").
+3. NO OPERATIONAL CHANGE CLAIMS: Do not imply a recent change to Blinkit’s operations or policies. Avoid phrasing like now undergo, now dispatch-checked, we’ve improved. State only present, verifiable facts about this specific product.
 
 ALLOWED ACTIONS (Choose exactly one):
 "highlight_seller" | "show_expiry_verification" | "show_replacement_guarantee" | "jump_to_reviews" | "focus_cta" | "no_action"
